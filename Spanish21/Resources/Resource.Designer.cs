@@ -41,11 +41,211 @@ namespace Spanish21
 			}
 		}
 		
-		public partial class Layout
+		public partial class Drawable
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Main = 2130837504;
+			public const int _2c = 2130837504;
+			
+			// aapt resource value: 0x7f020001
+			public const int _2d = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int _2h = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int _2s = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int _3c = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int _3d = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int _3h = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int _3s = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int _4c = 2130837512;
+			
+			// aapt resource value: 0x7f020009
+			public const int _4d = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int _4h = 2130837514;
+			
+			// aapt resource value: 0x7f02000b
+			public const int _4s = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int _5c = 2130837516;
+			
+			// aapt resource value: 0x7f02000d
+			public const int _5d = 2130837517;
+			
+			// aapt resource value: 0x7f02000e
+			public const int _5h = 2130837518;
+			
+			// aapt resource value: 0x7f02000f
+			public const int _5s = 2130837519;
+			
+			// aapt resource value: 0x7f020010
+			public const int _6c = 2130837520;
+			
+			// aapt resource value: 0x7f020011
+			public const int _6d = 2130837521;
+			
+			// aapt resource value: 0x7f020012
+			public const int _6h = 2130837522;
+			
+			// aapt resource value: 0x7f020013
+			public const int _6s = 2130837523;
+			
+			// aapt resource value: 0x7f020014
+			public const int _7c = 2130837524;
+			
+			// aapt resource value: 0x7f020015
+			public const int _7d = 2130837525;
+			
+			// aapt resource value: 0x7f020016
+			public const int _7h = 2130837526;
+			
+			// aapt resource value: 0x7f020017
+			public const int _7s = 2130837527;
+			
+			// aapt resource value: 0x7f020018
+			public const int _8c = 2130837528;
+			
+			// aapt resource value: 0x7f020019
+			public const int _8d = 2130837529;
+			
+			// aapt resource value: 0x7f02001a
+			public const int _8h = 2130837530;
+			
+			// aapt resource value: 0x7f02001b
+			public const int _8s = 2130837531;
+			
+			// aapt resource value: 0x7f02001c
+			public const int _9c = 2130837532;
+			
+			// aapt resource value: 0x7f02001d
+			public const int _9d = 2130837533;
+			
+			// aapt resource value: 0x7f02001e
+			public const int _9h = 2130837534;
+			
+			// aapt resource value: 0x7f02001f
+			public const int _9s = 2130837535;
+			
+			// aapt resource value: 0x7f020020
+			public const int _Ac = 2130837536;
+			
+			// aapt resource value: 0x7f020021
+			public const int _Ad = 2130837537;
+			
+			// aapt resource value: 0x7f020022
+			public const int _Ah = 2130837538;
+			
+			// aapt resource value: 0x7f020023
+			public const int _As = 2130837539;
+			
+			// aapt resource value: 0x7f020024
+			public const int _Jc = 2130837540;
+			
+			// aapt resource value: 0x7f020025
+			public const int _Jd = 2130837541;
+			
+			// aapt resource value: 0x7f020026
+			public const int _Jh = 2130837542;
+			
+			// aapt resource value: 0x7f020027
+			public const int _Js = 2130837543;
+			
+			// aapt resource value: 0x7f020028
+			public const int _Kc = 2130837544;
+			
+			// aapt resource value: 0x7f020029
+			public const int _Kd = 2130837545;
+			
+			// aapt resource value: 0x7f02002a
+			public const int _Kh = 2130837546;
+			
+			// aapt resource value: 0x7f02002b
+			public const int _Ks = 2130837547;
+			
+			// aapt resource value: 0x7f02002c
+			public const int _Qc = 2130837548;
+			
+			// aapt resource value: 0x7f02002d
+			public const int _Qd = 2130837549;
+			
+			// aapt resource value: 0x7f02002e
+			public const int _Qh = 2130837550;
+			
+			// aapt resource value: 0x7f02002f
+			public const int _Qs = 2130837551;
+			
+			// aapt resource value: 0x7f020030
+			public const int _Tc = 2130837552;
+			
+			// aapt resource value: 0x7f020031
+			public const int _Td = 2130837553;
+			
+			// aapt resource value: 0x7f020032
+			public const int _Th = 2130837554;
+			
+			// aapt resource value: 0x7f020033
+			public const int _Ts = 2130837555;
+			
+			// aapt resource value: 0x7f020034
+			public const int back = 2130837556;
+			
+			// aapt resource value: 0x7f020035
+			public const int back2x = 2130837557;
+			
+			// aapt resource value: 0x7f020036
+			public const int black_joker = 2130837558;
+			
+			// aapt resource value: 0x7f020037
+			public const int red_joker = 2130837559;
+			
+			static Drawable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Drawable()
+			{
+			}
+		}
+		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int cardImage = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int newCardBtn = 2131034113;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
+			{
+			}
+		}
+		
+		public partial class Layout
+		{
+			
+			// aapt resource value: 0x7f030000
+			public const int Main = 2130903040;
 			
 			static Layout()
 			{
@@ -60,8 +260,8 @@ namespace Spanish21
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f030000
-			public const int app_name = 2130903040;
+			// aapt resource value: 0x7f040000
+			public const int app_name = 2130968576;
 			
 			static String()
 			{
