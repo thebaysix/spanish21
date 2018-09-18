@@ -49,7 +49,7 @@ namespace Spanish21
                 var suit = cid % 4;
 
                 // Display the image
-                cardImage.SetImageResource(deckImages[cid/4, cid%4]);
+                cardImage.SetImageResource(deckImages[rank, suit]);
 
                 // Display deck info
                 textView.SetText("deckCount: " + deck.Count, TextView.BufferType.Normal);
