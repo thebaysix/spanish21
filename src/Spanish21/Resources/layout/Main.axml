@@ -1,22 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/cardImage"
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_width"
-        android:src="@drawable/_4c"
-        android:scaleType="fitCenter" />
-    <Button
-        android:text="New card!"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/newCardBtn" />
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#279714">
 	<TextView
-		android:text="Large Text"
+		android:text="Dealer"
 		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:id="@+id/dealerText" />
+	<LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/dealer_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<ImageView
+			android:id="@+id/cardImage_d1"
+			android:layout_weight="1"
+			android:layout_width="@android:dimen/notification_large_icon_width"
+			android:layout_height="@android:dimen/notification_large_icon_width"
+			android:src="@drawable/back"
+			android:scaleType="fitCenter" />
+		<ImageView
+			android:id="@+id/cardImage_d2"
+			android:layout_weight="1"
+			android:layout_width="@android:dimen/notification_large_icon_width"
+			android:layout_height="@android:dimen/notification_large_icon_width"
+			android:src="@drawable/back"
+			android:scaleType="fitCenter" />
+    </LinearLayout>
+	<TextView
+		android:text="Player"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:id="@+id/playerText" />
+	<LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/player_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<ImageView
+			android:id="@+id/cardImage_p1"
+			android:layout_weight="1"
+			android:layout_width="@android:dimen/notification_large_icon_width"
+			android:layout_height="@android:dimen/notification_large_icon_width"
+			android:src="@drawable/back"
+			android:scaleType="fitCenter" />
+		<ImageView
+			android:id="@+id/cardImage_p2"
+			android:layout_weight="1"
+			android:layout_width="@android:dimen/notification_large_icon_width"
+			android:layout_height="@android:dimen/notification_large_icon_width"
+			android:src="@drawable/back"
+			android:scaleType="fitCenter" />
+    </LinearLayout>
+	<LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/dealer_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<Button
+		android:text="Hit"
+		android:layout_weight="1"
+		android:layout_width="match_parent"
+		android:layout_height="?android:attr/actionBarSize"
+		android:id="@+id/hitBtn" />
+		<Button
+		android:text="Stand"
+		android:layout_weight="1"
+		android:layout_width="match_parent"
+		android:layout_height="?android:attr/actionBarSize"
+		android:id="@+id/standBtn" />
+    </LinearLayout>
+	<TextView
+		android:text="Wins: 0, Losses: 0"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_weight="1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"

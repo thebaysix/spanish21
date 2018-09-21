@@ -10,19 +10,19 @@ namespace Spanish21
     public class MainActivity : Activity
     {
         // Constants
-        const int numDecks = 1;
+        private const int numDecks = 1;
 
         // Initializations
-        ImageView cardImage;
-        TextView textView;
-        int cid = -1;
+        private ImageView cardImage_d1, cardImage_d2, cardImage_p1, cardImage_p2;
+        private TextView textView;
+        private int cid = -1;
+        private Random randObj = new Random();
+        private readonly int[,] deckImages = GetDeckImages();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             // Init
             base.OnCreate(savedInstanceState);
-            var randObj = new Random();
-            var deckImages = GetDeckImages();
 
             // Shuffle deck
             var deck = GetShuffledDeck(numDecks);
@@ -30,30 +30,67 @@ namespace Spanish21
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            cardImage = FindViewById<ImageView>(Resource.Id.cardImage);
+            cardImage_d1 = FindViewById<ImageView>(Resource.Id.cardImage_d1);
+            cardImage_d2 = FindViewById<ImageView>(Resource.Id.cardImage_d2);
+            cardImage_p1 = FindViewById<ImageView>(Resource.Id.cardImage_p1);
+            cardImage_p2 = FindViewById<ImageView>(Resource.Id.cardImage_p2);
             textView = FindViewById<TextView>(Resource.Id.textView);
-            FindViewById<Button>(Resource.Id.newCardBtn).Click += (o, e) =>
+
+            // Start the game
+            // 1. Deal
+            var dealerCards = new List<int>();
+            dealerCards.Add(Draw(deck));
+            dealerCards.Add(Draw(deck));
+            cardImage_d1.SetImageResource(Resource.Drawable.back); // one card face down
+            cardImage_d2.SetImageResource(GetDeckImage(dealerCards[1]));
+
+            var playerCards = new List<int>();
+            playerCards.Add(Draw(deck));
+            playerCards.Add(Draw(deck));
+            cardImage_p1.SetImageResource(GetDeckImage(playerCards[0]));
+            cardImage_p2.SetImageResource(GetDeckImage(playerCards[1]));
+
+            FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
             {
-                // Pick the top card from the deck
-                var randIndex = randObj.Next(deck.Count);
-                cid = deck[randIndex];
-                deck.Remove(cid);
-
-                // Card Logic:
-                // For n decks there are 52*n cards. Each card gets a cid from 0 to 52*n.
-                // From this cid you can deduce info about the card. Note: division truncates.
-                // homeDeck = cid / n  (decks are numbered 0...n)
-                // rank = (cid % 52)/ 4 (ranks are numbered 0...12)
-                // suit = (cid % 52) % 4 = cid % 4 (suits are numbered 0...3)
-                var rank = (cid % 52) / 4;
-                var suit = cid % 4;
-
-                // Display the image
-                cardImage.SetImageResource(deckImages[rank, suit]);
-
-                // Display deck info
-                textView.SetText("deckCount: " + deck.Count, TextView.BufferType.Normal);
+                // Add a card to the player cards
             };
+
+            FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
+            {
+                // Add a card to the player cards
+                cardImage_d1.SetImageResource(GetDeckImage(dealerCards[0]));
+                textView.SetText("You win", TextView.BufferType.Normal);
+            };
+        }
+
+        private int GetDeckImage(int cid)
+        {
+            // Card Logic:
+            // For n decks there are 52*n cards. Each card gets a cid from 0 to 52*n.
+            // From this cid you can deduce info about the card. Note: division truncates.
+            // homeDeck = cid / n  (decks are numbered 0...n)
+            // rank = (cid % 52)/ 4 (ranks are numbered 0...12)
+            // suit = (cid % 52) % 4 = cid % 4 (suits are numbered 0...3)
+            var rank = (cid % 52) / 4;
+            var suit = cid % 4;
+
+            return deckImages[rank, suit];
+        }
+
+        // TODO: Deck should be a class and this should be a function on the class
+        private int Draw(List<int> deck)
+        {
+            var randObj = new Random();
+
+            // If the deck is empty, shuffle
+            if (deck.Count == 0)
+                deck = GetShuffledDeck(numDecks);
+
+            // Pick the top card from the deck
+            cid = deck[0];
+            deck.Remove(cid);
+
+            return cid;
         }
 
         private List<int> GetShuffledDeck(int decks)
@@ -83,7 +120,7 @@ namespace Spanish21
         /// Getter for the images representing each card
         /// </summary>
         /// <returns>Returns a 2D array representing images of one deck (13 rows, 4 columns)</returns>
-        private int[,] GetDeckImages()
+        private static int[,] GetDeckImages()
         {
             int[,] deck = new int[13, 4]
             {

@@ -225,14 +225,38 @@ namespace Spanish21
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f050002
+			public const int cardImage_d1 = 2131034114;
+			
+			// aapt resource value: 0x7f050003
+			public const int cardImage_d2 = 2131034115;
+			
+			// aapt resource value: 0x7f050006
+			public const int cardImage_p1 = 2131034118;
+			
+			// aapt resource value: 0x7f050007
+			public const int cardImage_p2 = 2131034119;
+			
 			// aapt resource value: 0x7f050000
-			public const int cardImage = 2131034112;
+			public const int dealerText = 2131034112;
 			
 			// aapt resource value: 0x7f050001
-			public const int newCardBtn = 2131034113;
+			public const int dealer_area = 2131034113;
 			
-			// aapt resource value: 0x7f050002
-			public const int textView = 2131034114;
+			// aapt resource value: 0x7f050008
+			public const int hitBtn = 2131034120;
+			
+			// aapt resource value: 0x7f050004
+			public const int playerText = 2131034116;
+			
+			// aapt resource value: 0x7f050005
+			public const int player_area = 2131034117;
+			
+			// aapt resource value: 0x7f050009
+			public const int standBtn = 2131034121;
+			
+			// aapt resource value: 0x7f05000a
+			public const int textView = 2131034122;
 			
 			static Id()
 			{
