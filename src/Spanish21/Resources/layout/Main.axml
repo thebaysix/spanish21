@@ -77,6 +77,11 @@
 		android:layout_height="?android:attr/actionBarSize"
 		android:id="@+id/standBtn" />
     </LinearLayout>
+	<Button
+		android:text="Deal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/dealBtn" />
 	<TextView
 		android:text="Wins: 0, Losses: 0"
 		android:textAppearance="?android:attr/textAppearanceLarge"

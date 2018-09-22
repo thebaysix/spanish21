@@ -37,7 +37,47 @@ namespace Spanish21
             textView = FindViewById<TextView>(Resource.Id.textView);
 
             // Start the game
-            // 1. Deal
+            var hands = Deal(deck);
+            var dealerHand = hands.Item1;
+            var playerHand = hands.Item2;
+
+            FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
+            {
+                // Add a card to the player cards
+            };
+
+            FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
+            {
+                // Reveal
+                cardImage_d1.SetImageResource(GetDeckImage(dealerHand[0]));
+
+                // Add the hand totals
+                var dealerTotal = GetHandValue(dealerHand).Item1;
+                var playerTotal = GetHandValue(playerHand).Item1;
+
+                var resultText = "";
+                if (playerTotal > 21)
+                    resultText = "You bust";
+                if (dealerTotal > playerTotal)
+                    resultText = "You lose";
+                else if (playerTotal > dealerTotal)
+                    resultText = "You win!";
+                else
+                    resultText = "Tie";
+
+                textView.SetText(resultText + " D: " + dealerTotal + ", P: " + playerTotal, TextView.BufferType.Normal);
+            };
+
+            FindViewById<Button>(Resource.Id.dealBtn).Click += (o, e) =>
+            {
+                hands = Deal(deck);
+                dealerHand = hands.Item1;
+                playerHand = hands.Item2;
+            };
+        }
+
+        private Tuple<List<int>, List<int>> Deal(List<int> deck)
+        {
             var dealerCards = new List<int>();
             dealerCards.Add(Draw(deck));
             dealerCards.Add(Draw(deck));
@@ -50,17 +90,70 @@ namespace Spanish21
             cardImage_p1.SetImageResource(GetDeckImage(playerCards[0]));
             cardImage_p2.SetImageResource(GetDeckImage(playerCards[1]));
 
-            FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
-            {
-                // Add a card to the player cards
-            };
+            return new Tuple<List<int>, List<int>>(dealerCards, playerCards);
+        }
 
-            FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
+        /// <summary>
+        /// Get the total value of a given hand
+        /// </summary>
+        /// <param name="hand">List of cids representing the cards in the player's hand</param>
+        /// <returns>A tuple representing the greatest possible hand value (e.g. A + 7 = 18) and
+        /// whether or not the hand is soft (e.g. A + 7: isSoft = true)
+        /// </returns>
+        private Tuple<int, bool> GetHandValue(List<int> hand)
+        {
+            var value = 0;
+            var aceElevenCount = 0; // number of aces counting as 11s
+            var aceOneCount = 0; // number of aces counting as 1s
+
+            // Add up the total, tracking whether the hand is soft or hard
+            foreach (int cid in hand)
             {
-                // Add a card to the player cards
-                cardImage_d1.SetImageResource(GetDeckImage(dealerCards[0]));
-                textView.SetText("You win", TextView.BufferType.Normal);
-            };
+                bool isAce;
+                value += GetCardValue(cid, out isAce);
+
+                if (isAce)
+                    aceElevenCount++;
+
+                // If this card causes the total to exceed 21, see if you can treat any aces as 1s to save the hand
+                if (value > 21 && aceElevenCount > 0)
+                {
+                    aceElevenCount--;
+                    aceOneCount++;
+                    value -= 10;
+                }
+            }
+
+            // A hand is soft if there are any aces counting as 11 (which could later count as 1s)
+            var isSoft = aceElevenCount > 0;
+            return new Tuple<int, bool>(value, isSoft);
+        }
+
+        /// <summary>
+        /// Get the value this card has in the game. 
+        /// If the rank is 2-10, then value = rank.
+        /// If the rank is J-K (11-13), value = 10.
+        /// If the rank is A (14), value = 11 and return isAce = true to indicate it could be a 1 as well.
+        /// </summary>
+        /// <param name="cid">Given cardId</param>
+        /// <param name="isAce">Out param indicating if the card is an ace</param>
+        /// <returns>Value this card has in the game and a flag iff this card is an ace.</returns>
+        private int GetCardValue(int cid, out bool isAce)
+        {
+            isAce = false;
+
+            // Calculate ranks 2 through 14 (2 = 2, 3 = 3... 10 = 10, J = 11, Q = 12, K = 13, A = 14)
+            var rank = ((cid % 52) / 4) + 2;
+
+            if (rank <= 10)
+                return rank;
+            else if (rank <= 13)
+                return 10; // Face card
+            else
+            {
+                isAce = true;
+                return 11; // Ace
+            }
         }
 
         private int GetDeckImage(int cid)
@@ -69,12 +162,9 @@ namespace Spanish21
             // For n decks there are 52*n cards. Each card gets a cid from 0 to 52*n.
             // From this cid you can deduce info about the card. Note: division truncates.
             // homeDeck = cid / n  (decks are numbered 0...n)
-            // rank = (cid % 52)/ 4 (ranks are numbered 0...12)
-            // suit = (cid % 52) % 4 = cid % 4 (suits are numbered 0...3)
-            var rank = (cid % 52) / 4;
-            var suit = cid % 4;
-
-            return deckImages[rank, suit];
+            // row = (cid % 52)/ 4 (rows are numbered 0...12 - each rank has its own row)
+            // col = (cid % 52) % 4 = cid % 4 (cols are numbered 0...3 - each suit has its own col)
+            return deckImages[(cid % 52) / 4, cid % 4];
         }
 
         // TODO: Deck should be a class and this should be a function on the class

@@ -237,6 +237,9 @@ namespace Spanish21
 			// aapt resource value: 0x7f050007
 			public const int cardImage_p2 = 2131034119;
 			
+			// aapt resource value: 0x7f05000a
+			public const int dealBtn = 2131034122;
+			
 			// aapt resource value: 0x7f050000
 			public const int dealerText = 2131034112;
 			
@@ -255,8 +258,8 @@ namespace Spanish21
 			// aapt resource value: 0x7f050009
 			public const int standBtn = 2131034121;
 			
-			// aapt resource value: 0x7f05000a
-			public const int textView = 2131034122;
+			// aapt resource value: 0x7f05000b
+			public const int textView = 2131034123;
 			
 			static Id()
 			{
