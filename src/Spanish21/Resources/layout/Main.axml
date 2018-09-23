@@ -83,11 +83,19 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/dealBtn" />
 	<TextView
+		android:text=""
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_weight="1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:id="@+id/scoreText" />
+	<TextView
 		android:text="Wins: 0, Losses: 0"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:layout_weight="1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
-		android:id="@+id/textView" />
+		android:id="@+id/recordText" />
 </LinearLayout>

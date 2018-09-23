@@ -14,10 +14,12 @@ namespace Spanish21
 
         // Initializations
         private ImageView cardImage_d1, cardImage_d2, cardImage_p1, cardImage_p2;
-        private TextView textView;
+        private TextView recordText, scoreText;
+        private int numWins = 0, numLosses = 0;
         private int cid = -1;
         private Random randObj = new Random();
         private readonly int[,] deckImages = GetDeckImages();
+        private List<int> dealerHand, playerHand;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,12 +36,8 @@ namespace Spanish21
             cardImage_d2 = FindViewById<ImageView>(Resource.Id.cardImage_d2);
             cardImage_p1 = FindViewById<ImageView>(Resource.Id.cardImage_p1);
             cardImage_p2 = FindViewById<ImageView>(Resource.Id.cardImage_p2);
-            textView = FindViewById<TextView>(Resource.Id.textView);
-
-            // Start the game
-            var hands = Deal(deck);
-            var dealerHand = hands.Item1;
-            var playerHand = hands.Item2;
+            recordText = FindViewById<TextView>(Resource.Id.recordText);
+            scoreText = FindViewById<TextView>(Resource.Id.scoreText);
 
             FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
             {
@@ -57,20 +55,30 @@ namespace Spanish21
 
                 var resultText = "";
                 if (playerTotal > 21)
+                {
                     resultText = "You bust";
+                    numLosses++;
+                }
                 if (dealerTotal > playerTotal)
+                {
                     resultText = "You lose";
+                    numLosses++;
+                }
                 else if (playerTotal > dealerTotal)
+                {
                     resultText = "You win!";
+                    numWins++;
+                }
                 else
                     resultText = "Tie";
 
-                textView.SetText(resultText + " D: " + dealerTotal + ", P: " + playerTotal, TextView.BufferType.Normal);
+                scoreText.SetText(resultText + " D: " + dealerTotal + ", P: " + playerTotal, TextView.BufferType.Normal);
+                recordText.SetText("Wins: " + numWins + ", Losses: " + numLosses, TextView.BufferType.Normal);
             };
 
             FindViewById<Button>(Resource.Id.dealBtn).Click += (o, e) =>
             {
-                hands = Deal(deck);
+                var hands = Deal(deck);
                 dealerHand = hands.Item1;
                 playerHand = hands.Item2;
             };

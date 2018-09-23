@@ -255,11 +255,14 @@ namespace Spanish21
 			// aapt resource value: 0x7f050005
 			public const int player_area = 2131034117;
 			
-			// aapt resource value: 0x7f050009
-			public const int standBtn = 2131034121;
+			// aapt resource value: 0x7f05000c
+			public const int recordText = 2131034124;
 			
 			// aapt resource value: 0x7f05000b
-			public const int textView = 2131034123;
+			public const int scoreText = 2131034123;
+			
+			// aapt resource value: 0x7f050009
+			public const int standBtn = 2131034121;
 			
 			static Id()
 			{
