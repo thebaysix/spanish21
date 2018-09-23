@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mainLayout"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -14,7 +15,7 @@
 		android:id="@+id/dealerText" />
 	<LinearLayout
         android:orientation="horizontal"
-        android:id="@+id/dealer_area"
+        android:id="@+id/dealerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 		<ImageView
@@ -41,7 +42,7 @@
 		android:id="@+id/playerText" />
 	<LinearLayout
         android:orientation="horizontal"
-        android:id="@+id/player_area"
+        android:id="@+id/playerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 		<ImageView
@@ -61,7 +62,7 @@
     </LinearLayout>
 	<LinearLayout
         android:orientation="horizontal"
-        android:id="@+id/dealer_area"
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 		<Button

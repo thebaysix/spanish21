@@ -12,8 +12,9 @@ namespace Spanish21
         // Constants
         private const int numDecks = 1;
 
-        // Initializations
+        // Declarations
         private ImageView cardImage_d1, cardImage_d2, cardImage_p1, cardImage_p2;
+        private LinearLayout dealerLayout, mainLayout, playerLayout;
         private TextView recordText, scoreText;
         private int numWins = 0, numLosses = 0;
         private int cid = -1;
@@ -32,18 +33,40 @@ namespace Spanish21
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            // Initialize UI items:
+
+            // Images
             cardImage_d1 = FindViewById<ImageView>(Resource.Id.cardImage_d1);
             cardImage_d2 = FindViewById<ImageView>(Resource.Id.cardImage_d2);
             cardImage_p1 = FindViewById<ImageView>(Resource.Id.cardImage_p1);
             cardImage_p2 = FindViewById<ImageView>(Resource.Id.cardImage_p2);
+
+            // Layouts
+            dealerLayout = FindViewById<LinearLayout>(Resource.Id.dealerLayout);
+            mainLayout = FindViewById<LinearLayout>(Resource.Id.mainLayout);
+            playerLayout = FindViewById<LinearLayout>(Resource.Id.playerLayout);
+
+            // Text
             recordText = FindViewById<TextView>(Resource.Id.recordText);
             scoreText = FindViewById<TextView>(Resource.Id.scoreText);
 
+            // Action: Hit
             FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
             {
                 // Add a card to the player cards
+                var newCardImage = new ImageView(this);
+                var newCid = Draw(deck);
+                playerHand.Add(newCid);
+                newCardImage.SetImageResource(GetDeckImage(newCid));
+                var layoutParams = new LinearLayout.LayoutParams(
+                    Android.Views.ViewGroup.LayoutParams.MatchParent,
+                    Android.Views.ViewGroup.LayoutParams.WrapContent);
+                layoutParams.Weight = 1;
+
+                playerLayout.AddView(newCardImage);
             };
 
+            // Action: Stand
             FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
             {
                 // Reveal
@@ -76,6 +99,7 @@ namespace Spanish21
                 recordText.SetText("Wins: " + numWins + ", Losses: " + numLosses, TextView.BufferType.Normal);
             };
 
+            // Action: Deal
             FindViewById<Button>(Resource.Id.dealBtn).Click += (o, e) =>
             {
                 var hands = Deal(deck);
