@@ -24,11 +24,17 @@ namespace Spanish21
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            // Init
+            // Init OnCreate
             base.OnCreate(savedInstanceState);
+
+            // Initialize game logic items:
 
             // Shuffle deck
             var deck = GetShuffledDeck(numDecks);
+
+            // Hands
+            dealerHand = new List<int>();
+            playerHand = new List<int>();
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -38,10 +44,6 @@ namespace Spanish21
             // Images
             dealerCardImages = new List<ImageView>();
             playerCardImages = new List<ImageView>();
-            dealerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_d1));
-            dealerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_d2));
-            playerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_p1));
-            playerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_p2));
 
             // Layouts
             dealerLayout = FindViewById<LinearLayout>(Resource.Id.dealerLayout);
@@ -56,27 +58,16 @@ namespace Spanish21
             FindViewById<Button>(Resource.Id.hitBtn).Click += (o, e) =>
             {
                 // Add a card to the player cards
-                var newCardImage = new ImageView(this);
-                var newCid = Draw(deck);
-                playerHand.Add(newCid);
-                newCardImage.SetImageResource(GetDeckImage(newCid));
-                var layoutParams = new LinearLayout.LayoutParams(
-                    Android.Views.ViewGroup.LayoutParams.MatchParent,
-                    Android.Views.ViewGroup.LayoutParams.WrapContent);
-                layoutParams.Weight = 1;
-
-                // TODO: Figure out how to display new cards properly
-                layoutParams.Width = 80;
-                layoutParams.Height = 200;
-                newCardImage.LayoutParameters = layoutParams;
-
-                playerLayout.AddView(newCardImage);
+                var newCardResult = DrawNewImageAndCard(deck);
+                playerCardImages.Add(newCardResult.Item1);
+                playerLayout.AddView(newCardResult.Item1);
+                playerHand.Add(newCardResult.Item2);
             };
 
             // Action: Stand
             FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
             {
-                // Reveal
+                // Reveal the dealer's secret card
                 dealerCardImages[0].SetImageResource(GetDeckImage(dealerHand[0]));
 
                 // Add the hand totals
@@ -109,41 +100,45 @@ namespace Spanish21
             // Action: Deal
             FindViewById<Button>(Resource.Id.dealBtn).Click += (o, e) =>
             {
-                var hands = Deal(deck);
-                dealerHand = hands.Item1;
-                playerHand = hands.Item2;
+                Deal(deck);
             };
         }
 
-        private Tuple<List<int>, List<int>> Deal(List<int> deck)
+        private void Deal(List<int> deck)
         {
-            var dealerCards = new List<int>();
-            dealerCards.Add(Draw(deck));
-            dealerCards.Add(Draw(deck));
-            dealerCardImages[0].SetImageResource(Resource.Drawable.back); // one card face down
-            dealerCardImages[1].SetImageResource(GetDeckImage(dealerCards[1]));
-
-            var playerCards = new List<int>();
-            playerCards.Add(Draw(deck));
-            playerCards.Add(Draw(deck));
-            playerCardImages[0].SetImageResource(GetDeckImage(playerCards[0]));
-            playerCardImages[1].SetImageResource(GetDeckImage(playerCards[1]));
-
-            // Remove any additional cardImages
+            // Cleanup any existing cardImages
             // TODO: figure out how to remove old images properly
-            for (int i = 2; i < dealerCardImages.Count; i++)
-            {
-                dealerCardImages[i].Visibility = Android.Views.ViewStates.Gone;
-                dealerLayout.RemoveView(dealerCardImages[i]);
+            foreach (var dealerCardImage in dealerCardImages)
+                dealerCardImage.Visibility = Android.Views.ViewStates.Gone;
+            foreach (var playerCardImage in playerCardImages)
+                playerCardImage.Visibility = Android.Views.ViewStates.Gone;
 
-            }
-            for (int i = 2; i < playerCardImages.Count; i++)
-            {
-                playerCardImages[i].Visibility = Android.Views.ViewStates.Gone;
-                playerLayout.RemoveView(playerCardImages[i]);
-            }
+            var newDealerCardResult1 = DrawNewImageAndCard(deck, false);
+            var newDealerCardResult2 = DrawNewImageAndCard(deck);
+            dealerCardImages.Clear();
+            dealerCardImages.Add(newDealerCardResult1.Item1);
+            dealerCardImages.Add(newDealerCardResult2.Item1);
+            dealerLayout.AddView(newDealerCardResult1.Item1);
+            dealerLayout.AddView(newDealerCardResult2.Item1);
 
-            return new Tuple<List<int>, List<int>>(dealerCards, playerCards);
+            dealerHand.Clear();
+            dealerHand.Add(newDealerCardResult1.Item2);
+            dealerHand.Add(newDealerCardResult2.Item2);
+
+            var newPlayerCardResult1 = DrawNewImageAndCard(deck);
+            var newPlayerCardResult2 = DrawNewImageAndCard(deck);
+            playerCardImages.Clear();
+            playerCardImages.Add(newPlayerCardResult1.Item1);
+            playerCardImages.Add(newPlayerCardResult2.Item1);
+            playerLayout.AddView(newPlayerCardResult1.Item1);
+            playerLayout.AddView(newPlayerCardResult2.Item1);
+
+            playerHand.Clear();
+            playerHand.Add(newPlayerCardResult1.Item2);
+            playerHand.Add(newPlayerCardResult2.Item2);
+
+            scoreText.SetText("", TextView.BufferType.Normal);
+            recordText.SetText("", TextView.BufferType.Normal);
         }
 
         /// <summary>
@@ -218,6 +213,29 @@ namespace Spanish21
             // row = (cid % 52)/ 4 (rows are numbered 0...12 - each rank has its own row)
             // col = (cid % 52) % 4 = cid % 4 (cols are numbered 0...3 - each suit has its own col)
             return deckImages[(cid % 52) / 4, cid % 4];
+        }
+
+        /// <summary>
+        /// Wrapper around Draw function that also provides UI logic
+        /// </summary>
+        /// <param name="deck"></param>
+        /// <returns>Pair of the image requested and the cid that image represents</returns>
+        private Tuple<ImageView, int> DrawNewImageAndCard(List<int> deck, bool cardFaceUp = true)
+        {
+            var newCardImage = new ImageView(this);
+            var newCid = Draw(deck);
+            newCardImage.SetImageResource(cardFaceUp ? GetDeckImage(newCid) : Resource.Drawable.back);
+            var layoutParams = new LinearLayout.LayoutParams(
+                Android.Views.ViewGroup.LayoutParams.MatchParent,
+                Android.Views.ViewGroup.LayoutParams.WrapContent);
+            layoutParams.Weight = 1;
+
+            // TODO: Figure out how to display new cards properly
+            layoutParams.Width = 80;
+            layoutParams.Height = 200;
+            newCardImage.LayoutParameters = layoutParams;
+
+            return new Tuple<ImageView, int>(newCardImage, newCid);
         }
 
         // TODO: Deck should be a class and this should be a function on the class

@@ -18,20 +18,6 @@
         android:id="@+id/dealerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-		<ImageView
-			android:id="@+id/cardImage_d1"
-			android:layout_weight="1"
-			android:layout_width="@android:dimen/notification_large_icon_width"
-			android:layout_height="@android:dimen/notification_large_icon_width"
-			android:src="@drawable/back"
-			android:scaleType="fitCenter" />
-		<ImageView
-			android:id="@+id/cardImage_d2"
-			android:layout_weight="1"
-			android:layout_width="@android:dimen/notification_large_icon_width"
-			android:layout_height="@android:dimen/notification_large_icon_width"
-			android:src="@drawable/back"
-			android:scaleType="fitCenter" />
     </LinearLayout>
 	<TextView
 		android:text="Player"
@@ -45,20 +31,6 @@
         android:id="@+id/playerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-		<ImageView
-			android:id="@+id/cardImage_p1"
-			android:layout_weight="1"
-			android:layout_width="@android:dimen/notification_large_icon_width"
-			android:layout_height="@android:dimen/notification_large_icon_width"
-			android:src="@drawable/back"
-			android:scaleType="fitCenter" />
-		<ImageView
-			android:id="@+id/cardImage_p2"
-			android:layout_weight="1"
-			android:layout_width="@android:dimen/notification_large_icon_width"
-			android:layout_height="@android:dimen/notification_large_icon_width"
-			android:src="@drawable/back"
-			android:scaleType="fitCenter" />
     </LinearLayout>
 	<LinearLayout
         android:orientation="horizontal"
