@@ -52,6 +52,7 @@ namespace Spanish21
 
             // Text
             recordText = FindViewById<TextView>(Resource.Id.recordText);
+            recordText.SetText("Wins: 0, Losses: 0", TextView.BufferType.Normal);
             scoreText = FindViewById<TextView>(Resource.Id.scoreText);
 
             // Action: Hit
@@ -138,7 +139,6 @@ namespace Spanish21
             playerHand.Add(newPlayerCardResult2.Item2);
 
             scoreText.SetText("", TextView.BufferType.Normal);
-            recordText.SetText("", TextView.BufferType.Normal);
         }
 
         /// <summary>
