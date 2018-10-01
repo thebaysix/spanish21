@@ -13,7 +13,7 @@ namespace Spanish21
         private const int numDecks = 1;
 
         // Declarations
-        private ImageView cardImage_d1, cardImage_d2, cardImage_p1, cardImage_p2;
+        private List<ImageView> dealerCardImages, playerCardImages;
         private LinearLayout dealerLayout, mainLayout, playerLayout;
         private TextView recordText, scoreText;
         private int numWins = 0, numLosses = 0;
@@ -36,10 +36,12 @@ namespace Spanish21
             // Initialize UI items:
 
             // Images
-            cardImage_d1 = FindViewById<ImageView>(Resource.Id.cardImage_d1);
-            cardImage_d2 = FindViewById<ImageView>(Resource.Id.cardImage_d2);
-            cardImage_p1 = FindViewById<ImageView>(Resource.Id.cardImage_p1);
-            cardImage_p2 = FindViewById<ImageView>(Resource.Id.cardImage_p2);
+            dealerCardImages = new List<ImageView>();
+            playerCardImages = new List<ImageView>();
+            dealerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_d1));
+            dealerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_d2));
+            playerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_p1));
+            playerCardImages.Add(FindViewById<ImageView>(Resource.Id.cardImage_p2));
 
             // Layouts
             dealerLayout = FindViewById<LinearLayout>(Resource.Id.dealerLayout);
@@ -63,6 +65,11 @@ namespace Spanish21
                     Android.Views.ViewGroup.LayoutParams.WrapContent);
                 layoutParams.Weight = 1;
 
+                // TODO: Figure out how to display new cards properly
+                layoutParams.Width = 80;
+                layoutParams.Height = 200;
+                newCardImage.LayoutParameters = layoutParams;
+
                 playerLayout.AddView(newCardImage);
             };
 
@@ -70,7 +77,7 @@ namespace Spanish21
             FindViewById<Button>(Resource.Id.standBtn).Click += (o, e) =>
             {
                 // Reveal
-                cardImage_d1.SetImageResource(GetDeckImage(dealerHand[0]));
+                dealerCardImages[0].SetImageResource(GetDeckImage(dealerHand[0]));
 
                 // Add the hand totals
                 var dealerTotal = GetHandValue(dealerHand).Item1;
@@ -82,7 +89,7 @@ namespace Spanish21
                     resultText = "You bust";
                     numLosses++;
                 }
-                if (dealerTotal > playerTotal)
+                else if (dealerTotal > playerTotal)
                 {
                     resultText = "You lose";
                     numLosses++;
@@ -113,14 +120,28 @@ namespace Spanish21
             var dealerCards = new List<int>();
             dealerCards.Add(Draw(deck));
             dealerCards.Add(Draw(deck));
-            cardImage_d1.SetImageResource(Resource.Drawable.back); // one card face down
-            cardImage_d2.SetImageResource(GetDeckImage(dealerCards[1]));
+            dealerCardImages[0].SetImageResource(Resource.Drawable.back); // one card face down
+            dealerCardImages[1].SetImageResource(GetDeckImage(dealerCards[1]));
 
             var playerCards = new List<int>();
             playerCards.Add(Draw(deck));
             playerCards.Add(Draw(deck));
-            cardImage_p1.SetImageResource(GetDeckImage(playerCards[0]));
-            cardImage_p2.SetImageResource(GetDeckImage(playerCards[1]));
+            playerCardImages[0].SetImageResource(GetDeckImage(playerCards[0]));
+            playerCardImages[1].SetImageResource(GetDeckImage(playerCards[1]));
+
+            // Remove any additional cardImages
+            // TODO: figure out how to remove old images properly
+            for (int i = 2; i < dealerCardImages.Count; i++)
+            {
+                dealerCardImages[i].Visibility = Android.Views.ViewStates.Gone;
+                dealerLayout.RemoveView(dealerCardImages[i]);
+
+            }
+            for (int i = 2; i < playerCardImages.Count; i++)
+            {
+                playerCardImages[i].Visibility = Android.Views.ViewStates.Gone;
+                playerLayout.RemoveView(playerCardImages[i]);
+            }
 
             return new Tuple<List<int>, List<int>>(dealerCards, playerCards);
         }
