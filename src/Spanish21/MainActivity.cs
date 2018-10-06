@@ -3,6 +3,7 @@ using Android.Widget;
 using Android.OS;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Spanish21
 {
@@ -24,6 +25,8 @@ namespace Spanish21
         private Random randObj = new Random();
         private readonly int[,] deckImages = GetDeckImages();
         private List<int> dealerHand, playerHand;
+
+        private enum GameResult { Win = 0, Loss = 1, Tie = 2 }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -66,6 +69,15 @@ namespace Spanish21
                 playerCardImages.Add(newCardResult.Item1);
                 playerLayout.AddView(newCardResult.Item1);
                 playerHand.Add(newCardResult.Item2);
+
+                // See if the player busted
+                var playerTotal = GetHandValue(playerHand).Item1;
+                if (playerTotal > 21)
+                {
+                    var resultText = "You bust";
+                    var dealerTotal = GetHandValue(dealerHand).Item1;
+                    UpdateResultInfo(resultText, GameResult.Loss, dealerTotal, playerTotal);
+                }
             };
 
             // Action: Stand
@@ -74,31 +86,54 @@ namespace Spanish21
                 // Reveal the dealer's secret card
                 dealerCardImages[0].SetImageResource(GetDeckImage(dealerHand[0]));
 
-                // Add the hand totals
-                var dealerTotal = GetHandValue(dealerHand).Item1;
+                // Follow dealer protocol (stand on 17+, hit on soft 17)
+                var dealerHandValue = GetHandValue(dealerHand);
+                var dealerTotal = dealerHandValue.Item1;
+                var isSoft = dealerHandValue.Item2;
+                while (dealerTotal < 17 || (dealerTotal == 17 && isSoft))
+                {
+                    // Pause for suspense
+                    Thread.Sleep(1000);
+
+                    // Add a card to the dealer cards
+                    var newCardResult = DrawNewImageAndCard(deck);
+                    dealerCardImages.Add(newCardResult.Item1);
+                    dealerLayout.AddView(newCardResult.Item1);
+                    dealerHand.Add(newCardResult.Item2);
+
+                    // Update dealer hand info
+                    dealerHandValue = GetHandValue(dealerHand);
+                    dealerTotal = dealerHandValue.Item1;
+                    isSoft = dealerHandValue.Item2;
+                }
+
+                // Compare the hand totals
                 var playerTotal = GetHandValue(playerHand).Item1;
 
                 var resultText = "";
-                if (playerTotal > 21)
+                GameResult gameResult;
+                if (dealerTotal > 21)
                 {
-                    resultText = "You bust";
-                    numLosses++;
+                    resultText = "Dealer busts, you win!";
+                    gameResult = GameResult.Win;
                 }
                 else if (dealerTotal > playerTotal)
                 {
                     resultText = "You lose";
-                    numLosses++;
+                    gameResult = GameResult.Loss;
                 }
                 else if (playerTotal > dealerTotal)
                 {
                     resultText = "You win!";
-                    numWins++;
+                    gameResult = GameResult.Win;
                 }
                 else
+                {
                     resultText = "Tie";
+                    gameResult = GameResult.Tie;
+                }
 
-                scoreText.SetText(resultText + " D: " + dealerTotal + ", P: " + playerTotal, TextView.BufferType.Normal);
-                recordText.SetText("Wins: " + numWins + ", Losses: " + numLosses, TextView.BufferType.Normal);
+                UpdateResultInfo(resultText, gameResult, dealerTotal, playerTotal);
             };
 
             // Action: Deal
@@ -106,6 +141,24 @@ namespace Spanish21
             {
                 Deal(deck);
             };
+        }
+
+        private void UpdateResultInfo(string resultTextInfo, GameResult gameResult, int dealerTotal, int playerTotal)
+        {
+            switch (gameResult)
+            {
+                case GameResult.Win:
+                    numWins++;
+                    break;
+                case GameResult.Loss:
+                    numLosses++;
+                    break;
+                default:
+                    break;
+            }
+
+            scoreText.SetText(resultTextInfo + " D: " + dealerTotal + ", P: " + playerTotal, TextView.BufferType.Normal);
+            recordText.SetText("Wins: " + numWins + ", Losses: " + numLosses, TextView.BufferType.Normal);
         }
 
         private void Deal(List<int> deck)
