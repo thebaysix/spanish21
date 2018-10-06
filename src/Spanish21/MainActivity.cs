@@ -11,6 +11,9 @@ namespace Spanish21
     {
         // Constants
         private const int numDecks = 1;
+        private const int numSuits = 4;
+        private const int numRanks = 13;
+        private const int cardsPerDeck = numSuits * numRanks;
 
         // Declarations
         private List<ImageView> dealerCardImages, playerCardImages;
@@ -191,7 +194,7 @@ namespace Spanish21
             isAce = false;
 
             // Calculate ranks 2 through 14 (2 = 2, 3 = 3... 10 = 10, J = 11, Q = 12, K = 13, A = 14)
-            var rank = ((cid % 52) / 4) + 2;
+            var rank = ((cid % cardsPerDeck) / 4) + 2;
 
             if (rank <= 10)
                 return rank;
@@ -207,12 +210,12 @@ namespace Spanish21
         private int GetDeckImage(int cid)
         {
             // Card Logic:
-            // For n decks there are 52*n cards. Each card gets a cid from 0 to 52*n.
+            // For n decks there are cardsPerDeck*n cards. Each card gets a cid from 0 to cardsPerDeck*n.
             // From this cid you can deduce info about the card. Note: division truncates.
             // homeDeck = cid / n  (decks are numbered 0...n)
-            // row = (cid % 52)/ 4 (rows are numbered 0...12 - each rank has its own row)
-            // col = (cid % 52) % 4 = cid % 4 (cols are numbered 0...3 - each suit has its own col)
-            return deckImages[(cid % 52) / 4, cid % 4];
+            // row = (cid % cardsPerDeck)/ 4 (rows are numbered 0...12 - each rank has its own row)
+            // col = (cid % cardsPerDeck) % 4 = cid % 4 (cols are numbered 0...3 - each suit has its own col)
+            return deckImages[(cid % cardsPerDeck) / 4, cid % 4];
         }
 
         /// <summary>
@@ -260,7 +263,7 @@ namespace Spanish21
 
             // Start with an ordered deck
             var orderedDeck = new List<int>();
-            for (int i = 0; i < 52 * decks; i++)
+            for (int i = 0; i < cardsPerDeck * decks; i++)
                 orderedDeck.Add(i);
 
             // Now select cards randomly from the ordered deck to build the shuffled deck
@@ -280,10 +283,10 @@ namespace Spanish21
         /// <summary>
         /// Getter for the images representing each card
         /// </summary>
-        /// <returns>Returns a 2D array representing images of one deck (13 rows, 4 columns)</returns>
+        /// <returns>Returns a 2D array representing images of one deck</returns>
         private static int[,] GetDeckImages()
         {
-            int[,] deck = new int[13, 4]
+            int[,] deck = new int[numRanks, numSuits]
             {
                 {  Resource.Drawable._2c, Resource.Drawable._2d, Resource.Drawable._2h, Resource.Drawable._2s },
                 {  Resource.Drawable._3c, Resource.Drawable._3d, Resource.Drawable._3h, Resource.Drawable._3s },
